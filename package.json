@@ -1,0 +1,30 @@
+{
+  "name": "boardme_service",
+  "version": "1.0.0",
+  "description": "Server for Board Me",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cching0L2/BoardMeService.git"
+  },
+  "author": "Camellia Peng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cching0L2/BoardMeService/issues"
+  },
+  "homepage": "https://github.com/cching0L2/BoardMeService#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.2.1"
+  }
+}
