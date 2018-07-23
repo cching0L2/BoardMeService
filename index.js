@@ -38,8 +38,7 @@ app.use(function(req, res, next) {
 
 // Error handlers
 app.use(function(err, req, res, next) {
-	res.status(err.status || 500);
-	res.send(err.message);
+	res.status(err.status || 500).json({error: err.message})
 });
 
 app.listen(3000, function() {
