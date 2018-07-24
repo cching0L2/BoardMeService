@@ -1,11 +1,13 @@
-var express = require('express');
+import express from 'express'
+import bodyParser from 'body-parser'
+
 var app = express();
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
 var authRoutes = require('./routes/authRouter');
+var petRoutes = require('./routes/petRouter');
 
 // connect to MongoDB
 mongoose.connect('mongodb://localhost/boardMe');
@@ -28,6 +30,7 @@ app.use(express.static(__dirname + '/template'));
 app.use(bodyParser.json());
 
 app.use('/', authRoutes);
+app.use('/pets', petRoutes);
 
 // Catch not found errors
 app.use(function(req, res, next) {
