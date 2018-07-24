@@ -1,18 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-var User = require('../model/user');
+import express from 'express'
+import bodyParser from 'body-parser'
+import User from '../model/user'
+import requiresLogin from '../middlewares/requiresLogin'
 
-var requiresLogin = require('../middlewares/requiresLogin');
+const router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
     return res.status(200).json("working");
 });
 
 // POST /register
-router.post('/register', function(req, res, next) {
-    if (req.body.password !== req.body.passwordConf) {
-        var err = new Error("Passwords do not match");
+router.post('/register', (req, res, next) => {
+    if (req.body.password !== req .body.passwordConf) {
+        let err = new Error("Passwords do not match");
         err.status = 400;
         return next(err);
     }
@@ -21,7 +21,7 @@ router.post('/register', function(req, res, next) {
       req.body.username &&
       req.body.password &&
       req.body.passwordConf) {
-      var userData = {
+      const userData = {
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
@@ -29,15 +29,15 @@ router.post('/register', function(req, res, next) {
       }
 
       // Check if an existing user exists 
-      User.find().or([{ username: req.body.username }, { email: req.body.email }]).exec(function(err, existingUser) {
+      User.find().or([{ username: req.body.username }, { email: req.body.email }]).exec((err, existingUser) => {
         if (existingUser && existingUser.length > 0) {
-          var err = new Error("User already exists");
+          let err = new Error("User already exists");
           err.status = 400;
           return next(err);
         }
 
         // Create user
-        User.create(userData, function (err, user) {
+        User.create(userData,  (err, user) => {
           if (err) {
               return next(err)
           } else {
@@ -47,17 +47,17 @@ router.post('/register', function(req, res, next) {
         });
       });
     } else {
-      var err = new Error("All fields required");
+      let err = new Error("All fields required");
       err.status = 400;
       return next(err);
     }
 });
 
 // POST /login
-router.post('/login', function(req, res, next) {
+router.post('/login', (req, res, next) => {
   if (req.body.email &&
     req.body.password) {
-    User.authenticate(req.body.email, req.body.password, function(err, loggedInUser) {
+    User.authenticate(req.body.email, req.body.password, (err, loggedInUser) => {
       if (err) {
         return next(err);
       } else {
@@ -66,17 +66,17 @@ router.post('/login', function(req, res, next) {
       }
     })
   } else {
-    var err = new Error("All fields required");
+    let err = new Error("All fields required");
     err.status = 400;
     return next(err);
   }
 });
 
 // GET /logout
-router.get('/logout', function(req, res, next) {
+router.get('/logout', (req, res, next) => {
     if (req.session) {
         // Delete user session
-        req.session.destroy(function(err) {
+        req.session.destroy((err) => {
             if (err) {
                 return next(err);
             } else {

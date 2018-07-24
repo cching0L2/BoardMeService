@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
+import express from 'express'
+import bodyParser from 'body-parser'
+import requiresLogin from '../middlewares/requiresLogin'
 
-var requiresLogin = require('../middlewares/requiresLogin');
+let router = express.Router();
 
-router.get('/status', function(req, res, next) {
+router.get('/status', (req, res, next) => {
     return res.status(200).json("working");
 });
 
