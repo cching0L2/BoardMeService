@@ -28,11 +28,10 @@ router.post('/', requiresLogin, (req, res, next) => {
         if (err) {
             return next(err)
         } else {
-          return res.status(200).json("pet created");
+            console.log(pet)
+            return res.status(200).json("pet created");
         }
     })
-
-    return res.status(200).json("post pets endpoint working")
 })
 
 module.exports = router

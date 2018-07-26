@@ -5,6 +5,7 @@ let PetSchema = new mongoose.Schema({
     type: {
         type: String,
         enum: ['dog', 'cat', 'others'],
+        required: true
     },
     status: {
         isIdle: {type: Boolean, default: false},
@@ -13,7 +14,7 @@ let PetSchema = new mongoose.Schema({
     },
     breed: {type: String, trim: true},
     owner: {type: String, ref: 'User', required: true},
-    birthday: {type: Date},
+    birthday: {type: Number},
     createdAt: {type: Date, default: Date.now}
 });
 
