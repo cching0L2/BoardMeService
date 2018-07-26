@@ -3,10 +3,10 @@ import bodyParser from 'body-parser'
 import User from '../model/user'
 import requiresLogin from '../middlewares/requiresLogin'
 
-const router = express.Router();
+let router = express.Router();
 
 router.get('/', (req, res, next) => {
-    return res.status(200).json("working");
+  return res.status(200).json("working");
 });
 
 // POST /register
@@ -42,7 +42,6 @@ router.post('/register', (req, res, next) => {
               return next(err)
           } else {
               return res.status(200).json("user created");
-              return res.redirect('/user');
           }
         });
       });
@@ -86,4 +85,4 @@ router.get('/logout', (req, res, next) => {
     }
 });
 
-module.exports = router;
+module.exports = router
