@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import baseModel from '../libs/baseModel'
 
 let UserSchema = new mongoose.Schema({
   email: {type: String, unique: true, required: true, trim: true},
@@ -41,6 +42,10 @@ UserSchema.statics.authenticate = (email, password, callback) => {
       });
     })
 }
+
+UserSchema.plugin(baseModel, {
+    noSet: ['_id'],
+});
 
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

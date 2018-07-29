@@ -11,24 +11,26 @@ router.get('/status', (req, res, next) => {
 })
 
 router.get('/', requiresLogin, (req, res, next) => {
-    return res.status(200).json("get pets endpoint working")
+    // Get all pets for current logged in user
+    const ownerId = req.session.userId
+    Pet.find({owner: ownerId}, (err, pets) => {
+        if (err) {
+            return next(err)
+        } else {
+            console.log(pets)
+            return res.status(200).json(pets)
+        }
+    })
 })
 
 router.post('/', requiresLogin, (req, res, next) => {
-    if (!req.session || !req.session.userId) {
-        let err = new Error("Invalid user session");
-        err.status = 403;
-        return next(err);
-    }
-
-    const petData = req.body
+    const petData = req.body.sanitize()
     petData.owner = req.session.userId
 
     Pet.create(petData,  (err, pet) => {
         if (err) {
             return next(err)
         } else {
-            console.log(pet)
             return res.status(200).json("pet created");
         }
     })

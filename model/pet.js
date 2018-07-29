@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import baseModel from '../libs/baseModel'
 
 let PetSchema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -16,6 +17,11 @@ let PetSchema = new mongoose.Schema({
     owner: {type: String, ref: 'User', required: true},
     birthday: {type: Number},
     createdAt: {type: Date, default: Date.now}
+});
+
+PetSchema.plugin(baseModel, {
+    noSet: ['_id'],
+    private: ['_id'],
 });
 
 const Pet = mongoose.model('Pet', PetSchema);
