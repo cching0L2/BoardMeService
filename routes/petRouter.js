@@ -7,7 +7,7 @@ import requiresLogin from '../middlewares/requiresLogin'
 let router = express.Router();
 
 router.get('/status', (req, res, next) => {
-    return res.status(200).json("working")
+    return res.status(200).json("pet route working")
 })
 
 router.get('/', requiresLogin, (req, res, next) => {
