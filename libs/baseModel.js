@@ -1,13 +1,19 @@
 module.exports = function baseModel (schema, options = {}) {
-    let noSetFielids = ['createdAt']
+    let noSetFields = ['createdAt']
     let privateFields = ['__v']
 
     if (Array.isArray(options.private)) privateFields.push(...options.private)
 
-    schema.static.sanitize = function sanitize (objToSanitize = {}, additionalFields = []) {
+    schema.statics.sanitize = function sanitize (objToSanitize = {}, additionalFields = []) {
         noSetFields.concat(additionalFields).forEach((fieldPath) => {
             delete objToSanitize[fieldPath]
         })
+
+        return objToSanitize
+    }
+
+    schema.statics.sanitizeUpdate = function sanitizeUpdate (updateObj) {
+        return schema.statics.sanitize(updateObj)
     }
 
     if (!schema.options.toJSON) schema.options.toJSON = {}
