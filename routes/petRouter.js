@@ -19,7 +19,6 @@ router.get('/:id', requiresLogin, (req, res, next) => {
         }
 
         if (pet) {
-            console.log(pet)
             return res.status(200).json(pet)
         }
 
@@ -55,19 +54,21 @@ router.post('/', requiresLogin, (req, res, next) => {
 
 router.put('/', requiresLogin, (req, res, next) => {
     let updateData = Pet.sanitize(req.body)
+    if (!updateData.id) {
+        let err = new Error('No ID provided');
+        err.status = 400;
+        return next(err)
+    }
     
-    // TODO: use chained promises
-    Pet.update({_id: updateData.id}, updateData, (err) => {
-        if (err) {
-            return next(err)
-        }
-
-        Pet.findOne({_id: updateData.id}, (err, pet) => {
-            if (err) {
-                return next(err)
-            }
-            return res.status(200).json(pet)
-        })
+    Pet.update({_id: updateData.id}, updateData).exec()
+    .then((res) => {
+        return Pet.findOne({_id: updateData.id}).exec()
+    })
+    .then((pet) => {
+        return res.status(200).json(pet)
+    })
+    .catch((err) => {
+        return next(err)
     })
 })
 
