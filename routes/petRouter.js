@@ -7,10 +7,12 @@ import _ from 'underscore'
 
 let router = express.Router();
 
+// Status check
 router.get('/status', (req, res, next) => {
     return res.status(200).json("pet route working")
 })
 
+// Get a pet with the given ID
 router.get('/:id', requiresLogin, (req, res, next) => {
     var id = req.params.id;
     Pet.findOne({_id: id}, (err, pet) => {
@@ -28,6 +30,7 @@ router.get('/:id', requiresLogin, (req, res, next) => {
     })
 })
 
+// Get all pets that belong to the current user
 router.get('/', requiresLogin, (req, res, next) => {
     const ownerId = req.session.userId
     Pet.find({owner: ownerId}, (err, pets) => {
@@ -39,6 +42,7 @@ router.get('/', requiresLogin, (req, res, next) => {
     })
 })
 
+// Create a pet
 router.post('/', requiresLogin, (req, res, next) => {
     let pet = new Pet(Pet.sanitize(req.body))
     pet.owner = req.session.userId
@@ -52,6 +56,7 @@ router.post('/', requiresLogin, (req, res, next) => {
     })
 })
 
+// Edit pet information
 router.put('/', requiresLogin, (req, res, next) => {
     let updateData = Pet.sanitize(req.body)
     if (!updateData.id) {
@@ -72,6 +77,7 @@ router.put('/', requiresLogin, (req, res, next) => {
     })
 })
 
+// Delete a pet
 router.delete('/:id', requiresLogin, (req, res, next) => {
     var id = req.params.id;
     Pet.deleteOne({_id: id}, (err, pet) => {
